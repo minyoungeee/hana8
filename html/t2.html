@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- 별 의미가 없다 -->
+
+<head>
+    <!-- 검색 엔진을 위함 (4byte까지 확장되어 사용)-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta og:title> --> <!-- 공유를 위함 -->
+    <title>second html</title>
+    <style>
+        aside {
+            height: 50vh;
+            display: flex;
+            vertical-align: middle;
+            border: 1px solid green;
+        }
+
+        header,
+        nav,
+        footer {
+            margin: 5px 10px;
+            border: 1px solid green;
+            padding: 10px;
+
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        .container {
+            width: 400px;
+            border: 2px dotted;
+            border-color: blue;
+            margin: 10px;
+            background-color: yellow;
+            padding: 2rem;
+        }
+
+        img:not(.x) {
+            border: 3px dotted red;
+            margin-left: 15px;
+        }
+
+        .dot-red {
+            border: 2px dotted red;
+        }
+
+        .text-center {
+            text-align: center;
+            margin: 5px 5px 5px 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>header</header>
+    <nav>nav</nav>
+    <main
+        style="border: 1px solid red; padding: 5px; display: flex; align-items: center; justify-content: space-between;">
+        <div class="container">
+            <h1>main > container</h1>
+            <section>section</section>
+            <article style="font-size: 2rem;">
+                <h3 style="font-size: 1.2rem;">article - title</h3>
+                <figure style="display: inline-flex;">
+                    <img src="https://avatar.vercel.sh/s" alt="S" class="x" />
+                    <img src="https://unsplash.com/photos/b51xWeb75R4/download?ixid=M3wxMjA3fDB8MXxhbGx8M3x8fHx8fHx8MTc2MTg3OTc1M3w&force=true"
+                        alt="lion" class="y" width="150" class="dot-red">
+                </figure>
+            </article>
+        </div>
+        <aside style="display: flex; justify-content: center; width: 100ox; height: 200px; align-items: center;">aside
+        </aside>
+    </main>
+    <footer class="text-center"><b>&#169; 시니어코딩</b></footer>
+
+</body>
+
+</html>

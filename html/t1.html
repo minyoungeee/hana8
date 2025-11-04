@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en"> <!-- 별 의미가 없다 -->
+
+<head>
+    <!-- 검색 엔진을 위함 (4byte까지 확장되어 사용)-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta og:title> --> <!-- 공유를 위함 -->
+    <title>first html</title>
+    <style>
+        main,
+        article,
+        aside {
+            border: 1px solid red;
+        }
+
+        main section {
+            border: 1px dotted blue;
+        }
+
+        .container {
+            background-color: yellow;
+            width: 100px;
+        }
+
+        ul li:first-child {
+            font-weight: 700;
+        }
+
+        ol li:nth-child(odd):not(.x) {
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Title</h1>
+        <nav>Nav</nav>
+    </header>
+
+    <main style="display: flex; align-items: center; justify-content: center;"> <!-- flex : inline 태그로 다 바꿈 -->
+        <div class="container">
+            <section aria-label="section1" onclick="console.log('xxx')" aria-hidden="true">
+                <!-- aria-hidden : 접근성(Accessibility, A11y) 관련 속성 / HTML 요소가 화면에는 보이지만, 보조기기(스크린 리더 등) 에게는 숨겨지도록 설정하는 속성-->
+                <h3>Section</h3>
+                <ul>
+                    <li>111</li>
+                    <li><a href="#" onClick="" role="button">22</a></li>
+                    <li>333</li>
+                </ul>
+            </section>
+            <article draggable="true">
+                <h3>Article</h3>
+                <!-- ol>li{$}*3 -->
+                <ol>
+                    <li>1</li>
+                    <li>2</li>
+                    <li class="x">3</li>
+                    <li>4</li>
+                    <li>5</li>
+                </ol>
+            </article>
+        </div>
+        <aside style="display: flex; justify-content: center; width: 100ox; height: 200px; align-items: end;">Aside
+        </aside>
+    </main>
+
+    <footer style="text-align: center;">&#169; Hanaro 2025</footer>
+</body>
+
+</html>
