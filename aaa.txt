@@ -1,6 +1,2 @@
 example develop commit - 111
 example develop commit - 222
-commit test - 111
-commit test - 222
-commit test - 333
-end
