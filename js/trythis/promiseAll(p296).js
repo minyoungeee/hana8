@@ -1,0 +1,20 @@
+// 다음 코드에서 promiseAll 함수를 직접 작성하시오.
+// 코테에 나온 적 있음
+
+const randTime = (value) =>
+  new Promise((resolve) => setTimeout(resolve, 1000 * Math.random(), value));
+
+promiseAll([randTime(1), randTime(2), randTime(3)])
+  .then((arr) => {
+    console.table(arr);
+    assert.deepStrictEqual(arr, [1, 2, 3]);
+  })
+  .catch(console.error);
+
+promiseAll([randTime(11), Promise.reject("RRR"), randTime(33)])
+  .then((array) => {
+    console.log("여긴 과연 호출될까?!");
+  })
+  .catch((error) => {
+    console.log("reject!!!!!!>>", error);
+  });
