@@ -1,15 +1,14 @@
 import { useState } from 'react';
-import type { Item } from '../App';
+import { useSession, type ItemType } from '../hooks/SessionContext';
 import { PencilIcon, TrashIcon } from 'lucide-react';
 import Button from './ui/Button';
 
 type Props = {
-  item: Item;
-  removeItem: (id: number) => void;
-  editItem: (id: number, name: string, price: number) => void;
+  item: ItemType;
 };
 
-export default function Item({ item, removeItem, editItem }: Props) {
+export default function Item({ item }: Props) {
+  const { removeItem, editItem } = useSession();
   const [isEdit, setIsEdit] = useState(false);
 
   const [name, setName] = useState(item.name);

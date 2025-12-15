@@ -1,25 +1,46 @@
-import { useEffect, useRef, type FormEvent } from 'react';
+import { useEffect, useImperativeHandle, useRef, type FormEvent } from 'react';
 import Button from './ui/Button';
-import type { LoginFunction } from '../App';
 import LabelInput from './ui/LabelIntput';
+import { useSession } from '../hooks/SessionContext';
 
-type Props = {
-  login: LoginFunction;
+export type LoginHandler = {
+  validate: () => void;
+  focusName: () => void;
 };
 
-export default function Login({ login }: Props) {
-  //   const [name, setName] = useState('');
-  //   const [age, setAge] = useState(0);
-  //   console.log('🚀 ~name/age: ', name);
-
+export default function Login() {
+  const { login, loginHandlerRef: ref } = useSession();
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
 
+  useImperativeHandle(ref, () => ({
+    validate() {
+      if (!nameRef.current?.value) {
+        alert('Input the name!');
+        nameRef.current?.focus();
+        return false;
+      }
+
+      if (!ageRef.current?.value) {
+        alert('Input the age!');
+        ageRef.current?.focus();
+        return false;
+      }
+
+      return true;
+    },
+
+    focusName() {
+      nameRef.current?.focus();
+    },
+  }));
+
   const makeLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (nameRef.current?.value && ageRef.current?.value) {
-      login(nameRef.current.value, Number(ageRef.current.value));
-    }
+    // if (nameRef.current?.value && ageRef.current?.value) {
+    //if (validate()) {
+    login(nameRef.current?.value ?? '', Number(ageRef.current?.value));
+    //}
   };
 
   useEffect(() => {
@@ -30,11 +51,11 @@ export default function Login({ login }: Props) {
     <div className='border border-grey-300 p-3 rounded-lg '>
       <h1 className='text-2xl text-center text-green-600 font-medium'>Login</h1>
       <form onSubmit={makeLogin} className='space-y-3'>
-        <div>
-          <LabelInput label='Name' ref={nameRef} />
-          <LabelInput label='Age' type='number' ref={ageRef} />
+        {/* <div> */}
+        <LabelInput label='Name' ref={nameRef} />
+        <LabelInput label='Age' type='number' ref={ageRef} />
 
-          {/* <label htmlFor='name' className='text-sm text-grey-500'>
+        {/* <label htmlFor='name' className='text-sm text-grey-500'>
             Name
           </label>
           <input
@@ -46,7 +67,7 @@ export default function Login({ login }: Props) {
             className='w-full'
             required={true}
           /> */}
-        </div>
+        {/* </div> */}
         {/* <div>
           <label htmlFor='age' className='text-sm text-grey-500'>
             Age

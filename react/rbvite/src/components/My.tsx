@@ -1,32 +1,17 @@
 import { useRef, type FormEvent, type RefObject } from 'react';
-import type { LoginFunction, Session } from '../App';
+import { useSession } from '../hooks/SessionContext';
 import Login from './Login';
-import Profile from './Profile';
+import Profile, { type ProfileHandler } from './Profile';
 import Button from './ui/Button';
 import LabelInput from './ui/LabelIntput';
 import { CirclePlusIcon } from 'lucide-react';
 import Item from './Item';
 
-type CartActions = {
-  removeItem: (id: number) => void;
-  addItem: (name: string, price: number) => void;
-  editItem: (id: number, name: string, price: number) => void;
-};
-type Prop = {
-  session: Session;
-  logout: () => void;
-  login: LoginFunction;
-} & CartActions;
+export default function My() {
+  const { session, addItem } = useSession();
 
-export default function My({
-  session,
-  logout,
-  login,
-  removeItem,
-  addItem,
-  editItem,
-}: Prop) {
-  // const idRef = useRef<HTMLInputElement>(null);
+  const profileHandlerRef = useRef<ProfileHandler>(null);
+
   const nameRef = useRef<HTMLInputElement>(null);
   const priceRef = useRef<HTMLInputElement>(null);
 
@@ -53,6 +38,7 @@ export default function My({
       if (ref && ref.current) ref?.current?.focus();
       return;
     }
+
     addItem(name || '', Number(price));
     if (nameRef.current && priceRef.current) {
       nameRef.current.value = '';
@@ -63,16 +49,12 @@ export default function My({
 
   return (
     <>
-      {session?.loginUser ? (
-        <Profile loginUser={session.loginUser} logout={logout} />
-      ) : (
-        <Login login={login} />
-      )}
+      {session?.loginUser ? <Profile ref={profileHandlerRef} /> : <Login />}
       <hr />
       <ul>
         {session.cart.map((item) => (
           <li key={item.id}>
-            <Item item={item} removeItem={removeItem} editItem={editItem} />
+            <Item item={item} />
           </li>
         ))}
       </ul>
