@@ -20,7 +20,7 @@ export default function LabelInput({
   className,
 }: Props) {
   const inputId = useId();
-  console.log('🚀 ~ inputId:', inputId);
+  // console.log('🚀 ~ inputId:', inputId);
 
   return (
     <div>

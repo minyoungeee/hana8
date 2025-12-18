@@ -37,19 +37,21 @@ export default function Item({ item }: Props) {
   if (!isEdit) {
     return (
       <div className='text-center'>
-        {item.id}. {item.name} ({item.price.toLocaleString()}원)
-        <Button
-          onClick={startEdit}
-          className='inline-flex items-center justify-center w-9 h-9 border-0 outline-none shadow-none text-blue-600 hover:bg-blue-50 hover:border-blue-600 active:scale-95 transition'
-        >
-          <PencilIcon className='w-5 h-5' />
-        </Button>
-        <Button
-          onClick={() => removeItem(item.id)}
-          className='inline-flex items-center justify-center w-9 h-9 border-0 outline-none shadow-none text-red-600 hover:bg-red-50 hover:border-red-600 active:scale-95 transition'
-        >
-          <TrashIcon className='w-5 h-5' />
-        </Button>
+        <div>
+          {item.id}. {item.name} ({item.price.toLocaleString()}원)
+          <Button
+            onClick={startEdit}
+            className='inline-flex items-center justify-center w-9 h-9 border-0 outline-none shadow-none text-blue-600 hover:bg-blue-50 hover:border-blue-600 active:scale-95 transition'
+          >
+            <PencilIcon className='w-5 h-5' />
+          </Button>
+          <Button
+            onClick={() => removeItem(item.id)}
+            className='inline-flex items-center justify-center w-9 h-9 border-0 outline-none shadow-none text-red-600 hover:bg-red-50 hover:border-red-600 active:scale-95 transition'
+          >
+            <TrashIcon className='w-5 h-5' />
+          </Button>
+        </div>
       </div>
     );
   }

@@ -33,6 +33,29 @@ export const DefaultSession = {
   ],
 };
 
+// session-context의 session 데이터를 localstorage에 저장
+// 단, 최초 스토리지에 데이터가 없거나 만료 시 sample.json을 fetch하여 사용하고, logout되어도 장바구니 데이터는 유지하시오.
+// 저장은 장바구니 정보만!, 만료시간 적절히
+
+const SKEY = 'CART_v1';
+const SKEY_EXP = 'CART_EXP';
+const SKEY_EXP_TIME = 3850 * 1000;
+// const SKEY_EXP_TIME = 30 * 1000; //QQQ
+
+const setStorage = (cart: ItemType[]) => {
+  localStorage.setItem('SKEY', JSON.stringify(cart));
+  localStorage.setITem('SKEY_EXP', String(Date.now() + SKEY_EXP_TIME));
+};
+const getStorage = () => {
+  const expireAt = Number(localStorage.getItem(SKEY_EXP));
+  if (isNaN(expireAt) || expireAt < Date.now()) {
+    // localStorage.removeItem(SKEY);
+    localStorage.clear();
+    return [];
+  }
+  return JSON.parse(localStorage.getItem(SKEY) || '[]') as ItemType[];
+};
+
 type SessionContextValue = {
   session: Session;
   login: LoginFunction;
@@ -55,40 +78,36 @@ const SessionContext = createContext<SessionContextValue>({
 });
 
 type Action =
-  | { type: 'login'; payload: LoginUser }
-  | { type: 'logout' }
-  | { type: 'addItem'; payload: ItemType }
-  | { type: 'removeItem'; payload: number }
-  | { type: 'editItem'; payload: { id: number; name: string; price: number } };
+  | { type: 'LOGIN'; payload: LoginUser }
+  | { type: 'LOGOUT'; payload: null }
+  | { type: 'ADD_ITEM'; payload: ItemType }
+  | { type: 'REMOVE_ITEM'; payload: number }
+  | { type: 'EDIT_ITEM'; payload: { id: number; name: string; price: number } };
+
+// const { data } = useFetch<ItemType[]>('/data/sample.json');
 
 const reducer = (session: Session, action: Action): Session => {
   switch (action.type) {
-    case 'login':
-      return {
-        ...session,
-        loginUser: action.payload,
-      };
-
-    case 'logout':
+    case 'LOGIN':
+    case 'LOGOUT':
       return {
         ...session,
         loginUser: null,
-        cart: [],
       };
 
-    case 'addItem':
+    case 'ADD_ITEM':
       return {
         ...session,
         cart: [...session.cart, action.payload],
       };
 
-    case 'removeItem':
+    case 'REMOVE_ITEM':
       return {
         ...session,
         cart: session.cart.filter((item) => item.id !== action.payload),
       };
 
-    case 'editItem':
+    case 'EDIT_ITEM':
       return {
         ...session,
         cart: session.cart.map((item) =>
@@ -113,7 +132,7 @@ export function SessionProvider({ children }: PropsWithChildren) {
 
   const loginHandlerRef = useRef<LoginHandler>(null);
 
-  // TODO 기본 방식
+  // TODO Provider 기본 방식
 
   // const logout = () => {
   //   // session.loginUser = null; //fail
@@ -167,13 +186,13 @@ export function SessionProvider({ children }: PropsWithChildren) {
     if (!loginHandlerRef.current?.validate()) return;
 
     dispatch({
-      type: 'login',
+      type: 'LOGIN',
       payload: { id: 1, name, age },
     });
   };
 
   const logout = () => {
-    dispatch({ type: 'logout' });
+    dispatch({ type: 'LOGOUT', payload: null });
   };
 
   const addItem = (name: string, price: number) => {
@@ -183,17 +202,17 @@ export function SessionProvider({ children }: PropsWithChildren) {
       price,
     };
 
-    dispatch({ type: 'addItem', payload: newItem });
+    dispatch({ type: 'ADD_ITEM', payload: newItem });
   };
 
   const removeItem = (id: number) => {
     if (!confirm('Are u sure?')) return;
-    dispatch({ type: 'removeItem', payload: id });
+    dispatch({ type: 'REMOVE_ITEM', payload: id });
   };
 
   const editItem = (id: number, name: string, price: number) => {
     dispatch({
-      type: 'editItem',
+      type: 'EDIT_ITEM',
       payload: { id, name, price },
     });
   };

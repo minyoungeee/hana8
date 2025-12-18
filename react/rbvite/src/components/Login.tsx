@@ -1,4 +1,4 @@
-import { useEffect, useImperativeHandle, useRef, type FormEvent } from 'react';
+import { useImperativeHandle, useRef, type FormEvent } from 'react';
 import Button from './ui/Button';
 import LabelInput from './ui/LabelIntput';
 import { useSession } from '../hooks/SessionContext';
@@ -43,9 +43,11 @@ export default function Login() {
     //}
   };
 
-  useEffect(() => {
-    if (nameRef.current) nameRef.current.focus();
-  }, []);
+  // useEffect(() => {
+  //   if (nameRef.current) nameRef.current.focus();
+  //   alert('Login Plz ...');
+  //   return () => {};
+  // }, []);
 
   return (
     <div className='border border-grey-300 p-3 rounded-lg '>
@@ -84,13 +86,13 @@ export default function Login() {
         </div> */}
         <div className=' text-center'>
           <button
-            className='w-full border-0 rounded-md bg-gray-200 hover:bg-gray-300 rounded-4xl'
+            className='w-full border-0 bg-gray-200 hover:bg-gray-300 rounded-4xl'
             type='reset'
           >
             Cancel
           </button>
           <Button
-            // type='submit'
+            type='submit'
             // onClick={() => login(name, age)}
             className='w-full bg-green-500 text-white hover:bg-green-600'
           >
